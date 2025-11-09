@@ -1,0 +1,355 @@
+Look1nce - Complete File Structure
+=====================================
+
+Look1nce/
+│
+├── README.md                           # Project overview & introduction
+├── SETUP_GUIDE.md                      # Detailed setup instructions
+├── INSTALLATION_CHECKLIST.md           # Step-by-step checklist
+├── QUICK_REFERENCE.md                  # Quick command reference
+├── ARCHITECTURE.md                     # Technical architecture details
+├── START_SERVERS.md                    # How to start the app
+├── FILE_STRUCTURE.txt                  # This file
+├── .gitignore                          # Git ignore rules
+│
+├── backend/                            # Python FastAPI Backend
+│   ├── main.py                         # FastAPI server & API routes
+│   ├── requirements.txt                # Python dependencies
+│   ├── README.md                       # Backend-specific docs
+│   ├── .env.example                    # Environment variables template
+│   │
+│   ├── services/                       # Core processing services
+│   │   ├── __init__.py                 # Python package init
+│   │   ├── cloth_preprocessor.py       # Cloth image processing
+│   │   ├── person_preprocessor.py      # Person image processing
+│   │   └── tryon_service.py            # OOTDiffusion AI integration
+│   │
+│   ├── venv/                           # Virtual environment (created during setup)
+│   ├── uploads/                        # Uploaded files (auto-created)
+│   ├── temp/                           # Processed files (auto-created)
+│   │   ├── cloth_processed/            # Processed clothing images
+│   │   └── person_processed/           # Processed person images
+│   └── results/                        # Final try-on results (auto-created)
+│
+└── frontend/                           # Next.js React Frontend
+    ├── package.json                    # Node dependencies & scripts
+    ├── tsconfig.json                   # TypeScript configuration
+    ├── next.config.js                  # Next.js configuration
+    ├── tailwind.config.ts              # TailwindCSS configuration
+    ├── postcss.config.js               # PostCSS configuration
+    ├── README.md                       # Frontend-specific docs
+    ├── .env.local                      # Environment variables
+    │
+    ├── app/                            # Next.js 14 App Router
+    │   ├── layout.tsx                  # Root layout component
+    │   ├── page.tsx                    # Main page (3-step flow)
+    │   └── globals.css                 # Global CSS styles
+    │
+    ├── components/                     # React components
+    │   ├── ClothUpload.tsx             # Step 1: Cloth upload component
+    │   ├── PersonUpload.tsx            # Step 2: Person photo/camera component
+    │   └── TryOnResult.tsx             # Step 3: Result display component
+    │
+    ├── lib/                            # Utility libraries
+    │   └── api.ts                      # API client (Axios wrapper)
+    │
+    ├── node_modules/                   # NPM packages (created during setup)
+    ├── .next/                          # Next.js build output (created during dev)
+    └── public/                         # Static assets (optional)
+
+
+File Count Summary:
+===================
+Documentation Files:    7 files
+Backend Source:         7 files
+Frontend Source:        10 files
+Config Files:          6 files
+-----------------------------------
+Total Source Files:    30 files
+
+
+Key File Descriptions:
+======================
+
+DOCUMENTATION:
+--------------
+README.md                  - Start here! Project overview and introduction
+SETUP_GUIDE.md             - Complete setup instructions with troubleshooting
+INSTALLATION_CHECKLIST.md  - Step-by-step checklist for installation
+QUICK_REFERENCE.md         - Quick commands and reference card
+ARCHITECTURE.md            - System architecture and technical details
+START_SERVERS.md           - How to start backend and frontend servers
+FILE_STRUCTURE.txt         - This file - visual directory structure
+
+
+BACKEND (Python):
+-----------------
+main.py                    - FastAPI server with all API endpoints
+requirements.txt           - All Python dependencies to install
+services/cloth_preprocessor.py      - Removes background, crops, cleans cloth images
+services/person_preprocessor.py     - Detects pose, crops, enhances person photos
+services/tryon_service.py          - Integrates OOTDiffusion AI model
+
+
+FRONTEND (TypeScript/React):
+----------------------------
+app/page.tsx               - Main UI with 3-step wizard flow
+app/layout.tsx             - Root layout wrapper
+app/globals.css            - Global styles and custom CSS classes
+components/ClothUpload.tsx - Step 1: Upload clothing item UI
+components/PersonUpload.tsx - Step 2: Upload photo or use camera UI
+components/TryOnResult.tsx  - Step 3: Display result and download
+lib/api.ts                 - API client for backend communication
+
+
+CONFIG FILES:
+-------------
+package.json               - Frontend dependencies (React, Next.js, etc.)
+tsconfig.json              - TypeScript compiler settings
+next.config.js             - Next.js framework configuration
+tailwind.config.ts         - TailwindCSS theme and styling
+postcss.config.js          - PostCSS processing configuration
+.env.local                 - Frontend environment variables
+
+
+DIRECTORIES CREATED DURING USAGE:
+----------------------------------
+backend/venv/              - Python virtual environment (isolates dependencies)
+backend/uploads/           - Stores raw uploaded images temporarily
+backend/temp/              - Stores preprocessed images before AI processing
+backend/results/           - Stores final try-on results
+frontend/node_modules/     - All Node.js packages
+frontend/.next/            - Next.js build cache and compiled code
+
+
+WORKFLOW THROUGH FILES:
+=======================
+
+1. User Uploads Cloth (Frontend):
+   components/ClothUpload.tsx
+        ↓ (uses)
+   lib/api.ts → POST to backend
+        ↓
+   main.py receives request
+        ↓
+   services/cloth_preprocessor.py processes image
+        ↓
+   Saves to temp/cloth_processed/
+
+2. User Uploads Photo (Frontend):
+   components/PersonUpload.tsx
+        ↓ (uses)
+   lib/api.ts → POST to backend
+        ↓
+   main.py receives request
+        ↓
+   services/person_preprocessor.py processes image
+        ↓
+   Saves to temp/person_processed/
+
+3. Run Virtual Try-On (Frontend):
+   components/TryOnResult.tsx
+        ↓ (uses)
+   lib/api.ts → POST to backend
+        ↓
+   main.py receives request
+        ↓
+   services/tryon_service.py runs AI model
+        ↓
+   Saves result to results/
+        ↓
+   Returns path to frontend
+        ↓
+   components/TryOnResult.tsx displays image
+
+
+TECHNOLOGY STACK PER FILE:
+===========================
+
+Backend Files Use:
+- Python 3.10+
+- FastAPI (web framework)
+- PyTorch (AI models)
+- OpenCV (image processing)
+- Pillow (image manipulation)
+- rembg (background removal)
+- MediaPipe (pose detection)
+- NumPy (numerical operations)
+
+Frontend Files Use:
+- TypeScript 5.x
+- React 18
+- Next.js 14 (App Router)
+- TailwindCSS (styling)
+- Axios (HTTP client)
+- react-webcam (camera access)
+- Lucide React (icons)
+
+
+FILE SIZE ESTIMATES:
+====================
+Source code (all files):     ~50 KB
+Documentation:               ~150 KB
+Backend dependencies:        ~4 GB (in venv/)
+Frontend dependencies:       ~500 MB (in node_modules/)
+AI Models (downloaded):      ~2-4 GB (cached by PyTorch)
+User generated (images):     Variable (depends on usage)
+
+
+IMPORTANT FILES TO NEVER DELETE:
+=================================
+✓ All .py files in backend/
+✓ All .tsx, .ts, .json, .js files in frontend/
+✓ requirements.txt
+✓ package.json
+✓ All documentation .md files
+
+SAFE TO DELETE (will regenerate):
+==================================
+✓ backend/uploads/* (temporary uploads)
+✓ backend/temp/* (processed images)
+✓ backend/results/* (old results)
+✓ frontend/.next/* (rebuild cache)
+✓ frontend/node_modules/* (reinstall with bun install)
+
+
+FILES YOU MIGHT EDIT:
+=====================
+Configuration:
+- frontend/.env.local (change API URL)
+- backend/.env (if created, for secrets)
+- tailwind.config.ts (change colors/theme)
+
+Code Customization:
+- services/tryon_service.py (adjust AI parameters)
+- app/page.tsx (change UI layout)
+- app/globals.css (modify styles)
+
+
+STARTUP FILE EXECUTION ORDER:
+==============================
+
+Terminal 1 (Backend):
+1. cd D:\Look1nce\backend
+2. venv\Scripts\activate    (loads venv environment)
+3. python main.py           (runs main.py)
+   - Imports services/__init__.py
+   - Imports services/cloth_preprocessor.py
+   - Imports services/person_preprocessor.py
+   - Imports services/tryon_service.py
+   - Starts Uvicorn server
+   - Listens on port 8000
+
+Terminal 2 (Frontend):
+1. cd D:\Look1nce\frontend
+2. bun dev                  (runs Next.js dev server)
+   - Reads next.config.js
+   - Reads tsconfig.json
+   - Compiles app/layout.tsx
+   - Compiles app/page.tsx
+   - Compiles all components/*.tsx
+   - Processes globals.css with Tailwind
+   - Starts dev server
+   - Listens on port 3000
+
+
+DEPENDENCIES TREE:
+==================
+
+Backend (requirements.txt):
+fastapi==0.109.0
+  └─ uvicorn (ASGI server)
+  └─ pydantic (data validation)
+torch==2.1.2
+  └─ torchvision (vision models)
+diffusers==0.25.1
+  └─ transformers (HuggingFace models)
+opencv-python==4.9.0.80
+  └─ numpy (arrays)
+rembg==2.0.56
+  └─ onnxruntime (U2Net model)
+mediapipe==0.10.9
+  └─ protobuf (pose detection)
+
+Frontend (package.json):
+next==14.1.0
+  └─ react (UI library)
+  └─ react-dom (DOM rendering)
+axios==1.6.5
+  └─ (HTTP client)
+tailwindcss==3.4.1
+  └─ autoprefixer
+  └─ postcss
+react-webcam==7.2.0
+  └─ (camera access)
+
+
+EXECUTION FLOW DIAGRAM:
+========================
+
+User Browser (localhost:3000)
+         ↓
+    app/page.tsx
+         ↓
+    ┌────┴────┬────────┬────────┐
+    │         │        │        │
+Step 1    Step 2   Step 3   Layout
+    │         │        │        │
+ClothUpload PersonUpload TryOnResult layout.tsx
+    │         │        │
+    └────┬────┴────┬───┘
+         │         │
+      lib/api.ts   │
+         │         │
+    Axios HTTP Requests
+         │         │
+         ▼         ▼
+Backend (localhost:8000)
+         │
+      main.py
+         │
+    ┌────┴────┬────────┐
+    │         │        │
+ClothPre  PersonPre  TryOn
+processor  processor Service
+    │         │        │
+    └────┬────┴────┬───┘
+         │         │
+    OpenCV    MediaPipe  OOTDiffusion
+    rembg     Pose       AI Model
+
+
+QUICK NAVIGATION:
+=================
+Want to...                          → Check file...
+- Understand the project            → README.md
+- Install/setup                     → INSTALLATION_CHECKLIST.md
+- Quick commands                    → QUICK_REFERENCE.md
+- Technical details                 → ARCHITECTURE.md
+- Start the app                     → START_SERVERS.md
+- Troubleshoot                      → SETUP_GUIDE.md
+- Understand files                  → FILE_STRUCTURE.txt (this file)
+- Modify AI behavior                → backend/services/tryon_service.py
+- Change UI                         → frontend/app/page.tsx
+- Modify styling                    → frontend/app/globals.css
+- Add API endpoint                  → backend/main.py
+- Create new component              → frontend/components/
+- Adjust preprocessing              → backend/services/*_preprocessor.py
+
+
+HELPFUL TIPS:
+=============
+1. Always activate venv before running backend
+2. Keep both terminals open while using app
+3. Backend must start before frontend for full functionality
+4. Check terminal logs if something doesn't work
+5. Browser console (F12) shows frontend errors
+6. Backend terminal shows backend errors
+7. Delete temp files periodically to save space
+8. Model downloads automatically on first run
+9. Results are saved permanently until manually deleted
+10. You can run multiple try-ons without restarting
+
+
+END OF FILE STRUCTURE DOCUMENTATION
+====================================
